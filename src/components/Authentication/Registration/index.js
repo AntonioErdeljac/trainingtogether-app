@@ -53,7 +53,7 @@ class Registration extends Form {
   }
 
   render() {
-    const { isSubmitting } = this.props;
+    const { isSubmitting, navigation } = this.props;
     const { selection } = this.state;
 
     let selectionContent = (
@@ -72,8 +72,8 @@ class Registration extends Form {
     if (selection === 'email') {
       selectionContent = (
         <View style={styles.emailContainer}>
-          <Input itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('email')} label="Email" />
-          <Input type="password" itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('password')} label="Password" />
+          <Input itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('contact.email')} label="Email" />
+          <Input type="password" itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('authentication.password')} label="Password" />
           <TouchableOpacity onPress={this.handleRegistration} style={styles.registrationButton}>
             <Text style={styles.registrationButtonText}>Register</Text>
           </TouchableOpacity>
@@ -90,11 +90,18 @@ class Registration extends Form {
         imageStyle={styles.backgroundImageStyle}
       >
       <View style={styles.container}>
-        <Icon type="MaterialCommunityIcons" name="heart-pulse" style={styles.icon}/>
+        <Image
+          style={styles.logo}
+          source={images.logo}
+          resizeMode="contain"
+        />
         <Text style={styles.title}>
           TrainingTogether
         </Text>
         {selectionContent}
+        <TouchableOpacity onPress={() => navigation.navigate(paths.client.Login)}>
+          <Text style={{ paddingTop: 10, paddingBottom: 10, fontSize: 15, color: '#fff', fontFamily: 'Nunito-Light', textAlign: 'center' }} >I already have an account</Text>
+        </TouchableOpacity>
       </View>
         </ImageBackground>
       </React.Fragment>

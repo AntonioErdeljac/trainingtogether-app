@@ -8,15 +8,12 @@ import { paths } from '../../../common/constants';
 
 class Selection extends React.Component {
   componentDidMount() {
-    const { navigation, getAuthUser } = this.props;
+    const { navigation } = this.props;
 
     AsyncStorage.getItem('token')
       .then((token) => {
         if (token) {
-          getAuthUser()
-            .then(() => {
-              navigation.navigate('Auth');
-            });
+          navigation.navigate('App');
         } else {
           navigation.navigate('App');
         }
@@ -32,7 +29,6 @@ class Selection extends React.Component {
 
 Selection.propTypes = {
   navigation: PropTypes.shape({}).isRequired,
-  getAuthUser: PropTypes.func.isRequired,
 };
 
 export default connect(

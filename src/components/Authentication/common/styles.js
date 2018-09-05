@@ -3,6 +3,10 @@ import { Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 
 export default {
+  logo: {
+    height: 100,
+    width: 100,
+  },
   borderTransparent: {
     borderColor: 'transparent',
   },
@@ -16,12 +20,12 @@ export default {
     fontFamily: 'Nunito-Regular'
   },
   emailContainer: {
-    flex: 1,
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'column',
     alignSelf: 'center',
+    flex: 1,
     width: Dimensions.get('window').width-35,
   },
   colorGreen: {
@@ -54,6 +58,7 @@ export default {
     fontSize: 30
   },
   container: {
+    paddingTop: 30,
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',

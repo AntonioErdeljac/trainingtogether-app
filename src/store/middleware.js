@@ -20,7 +20,7 @@ export default () => ({ dispatch, getState }) => next => (action) => {
   next({ ...restParams, type: REQUEST });
 
   return AsyncStorage.getItem('token')
-    .then(token => promise(axios.create(token && { headers: { Authorization: `Token ${token}` } }), dispatch)
+    .then(token => promise(axios.create(token && { headers: { authentication: `${token}` } }), dispatch)
       .then(
         result => next({ ...restParams, result, type: SUCCESS }),
         (error) => {
