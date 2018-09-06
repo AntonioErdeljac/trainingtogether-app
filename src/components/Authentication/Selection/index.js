@@ -8,14 +8,23 @@ import { paths } from '../../../common/constants';
 
 class Selection extends React.Component {
   componentDidMount() {
-    const { navigation } = this.props;
+    const { navigation, login } = this.props;
 
-    AsyncStorage.getItem('token')
-      .then((token) => {
-        if (token) {
+    Promise.all([
+      AsyncStorage.getItem('email'),
+      AsyncStorage.getItem('password'),
+    ])
+      .then((items) => {
+        if(!items[0] || !items[1]) {
           navigation.navigate('App');
         } else {
-          navigation.navigate('App');
+          login({ email: items[0], password: items[1] })
+            .then(({result}) => {
+              AsyncStorage.setItem('token', result.data.authentication.sessionToken)
+                .then(() => {
+                  navigation.navigate('Authenticated');
+                })
+            })
         }
       });
   }
@@ -34,6 +43,6 @@ Selection.propTypes = {
 export default connect(
   null,
   {
-    ...actions.user,
+    ...actions.authentication,
   },
 )(Selection);

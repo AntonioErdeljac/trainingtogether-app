@@ -1,6 +1,8 @@
 import keyMirror from 'keymirror';
 
 export default keyMirror({
-  REGISTRATION: null,
   LOGIN: null,
+  REGISTRATION: null,
+  SETTINGS: null,
+  TRAINING: null,
 });

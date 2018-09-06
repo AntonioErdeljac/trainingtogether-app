@@ -41,7 +41,14 @@ class Login extends Form {
         if (canSubmit) {
           login(values)
               .then(({ result }) => {
-                AsyncStorage.setItem('token', result.data.authentication.sessionToken);
+                Promise.all([
+                  AsyncStorage.setItem('email', values.email),
+                  AsyncStorage.setItem('password', values.password),
+                  AsyncStorage.setItem('token', result.data.authentication.sessionToken),
+                ])
+                  .then(() => {
+                    navigation.navigate('Authenticated');
+                  })
               });
         }
         return canSubmit;

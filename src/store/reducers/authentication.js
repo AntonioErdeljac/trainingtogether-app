@@ -4,6 +4,7 @@ import { actions } from '../../common/constants';
 const initialState = {
   hasRegistered: false,
   isSubmitting: false,
+  authData: {},
 };
 
 const actionMap = {
@@ -12,7 +13,7 @@ const actionMap = {
   [actions.AUTHENTICATION_REGISTRATION_FAILURE]: state => ({ ...state, isSubmitting: false, hasRegistered: false }),
 
   [actions.AUTHENTICATION_LOGIN_REQUEST]: state => ({ ...state, isSubmitting: true, hasRegistered: false }),
-  [actions.AUTHENTICATION_LOGIN_SUCCESS]: state => ({ ...state, isSubmitting: false, hasRegistered: true }),
+  [actions.AUTHENTICATION_LOGIN_SUCCESS]: (state, { result }) => ({ ...state, isSubmitting: false, hasRegistered: true, authData: result.data }),
   [actions.AUTHENTICATION_LOGIN_FAILURE]: state => ({ ...state, isSubmitting: false, hasRegistered: false }),
 
   [actions.AUTHENTICATION_REDIRECT]: state => ({ ...state, redirectToLogin: true }),
