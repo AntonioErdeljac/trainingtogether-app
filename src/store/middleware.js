@@ -25,6 +25,7 @@ export default () => ({ dispatch, getState }) => next => (action) => {
         result => next({ ...restParams, result, type: SUCCESS }),
         (error) => {
           next({ ...restParams, error, type: FAILURE });
+          dispatch({ type: actions.TOAST_FAILURE });
           return Promise.reject(error);
         },
       ));

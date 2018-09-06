@@ -6,7 +6,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { updateFocus } from 'react-navigation-is-focused-hoc';
 
-import { Authentication, Trainings, Settings, Training } from './components';
+import { Authentication, Trainings, Settings, Training, Root } from './components';
 import { initialRoute } from './common/constants';
 import { reducers, middleware } from './store';
 
@@ -70,11 +70,13 @@ const store = createStore(reducers, applyMiddleware(thunk, middleware()));
 
 const App = () => (
   <Provider store={store}>
-    <InitialRouter
-      onNavigationStateChange={(prevState, currentState) => {
-        updateFocus(currentState)
-      }}
-    />
+    <Root>
+      <InitialRouter
+        onNavigationStateChange={(prevState, currentState) => {
+          updateFocus(currentState)
+        }}
+      />
+    </Root>
   </Provider>
 );
 

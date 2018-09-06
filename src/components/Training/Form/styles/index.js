@@ -11,6 +11,9 @@ export default {
     fontFamily: 'Nunito-Regular',
     borderColor: 'rgba(0,0,0,.4)',
     borderWidth: 0.1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%'
   },
 
   borderLess: {

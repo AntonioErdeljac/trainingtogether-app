@@ -11,6 +11,7 @@ export default {
     fontFamily: 'Nunito-Regular',
     borderColor: 'rgba(0,0,0,.4)',
     borderWidth: 0.1,
+    width: '100%',
   },
 
   borderLess: {

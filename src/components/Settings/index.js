@@ -7,7 +7,7 @@ import { isEmpty, isEqual } from 'lodash';
 import selectors from './selectors';
 import styles from './styles';
 
-import { Input, Form } from '../common/components';
+import { Input, Form, Textarea } from '../common/components';
 
 import actions from '../../actions';
 import { forms } from '../../common/constants'
@@ -69,6 +69,7 @@ class Settings extends Form {
           <View style={{ display: 'flex', justifyContent: 'center', alignSelf: 'center', alignItems: 'center', }}>
             <Input itemStyle={styles.borderLess} style={styles.input} {...this.getFieldProps('personal.firstName')} label="First name" />
             <Input itemStyle={styles.borderLess} style={styles.input} {...this.getFieldProps('personal.lastName')} label="Last name" />
+            <Textarea itemStyle={styles.borderLess} style={styles.input} {...this.getFieldProps('personal.description')} label="About me" />
           </View>
           <TouchableOpacity onPress={this.handleSave} style={styles.submitButton}>
             {isSubmitting
