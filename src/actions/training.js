@@ -11,4 +11,6 @@ export default {
       promise: client => client.post(paths.api.TRAININGS, values),
     },
   }),
+
+  clearTrainingData: () => ({ type: actions.TRAINING_DATA_RESET }),
 };

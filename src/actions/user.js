@@ -21,5 +21,7 @@ export default {
       ],
       promise: client => client.put(paths.build(paths.api.USERS_ID, id), values),
     },
-  })
+  }),
+
+  clearUserData: () => ({ type: actions.USER_DATA_RESET }),
 };

@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Icon } from 'native-base';
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { updateFocus } from 'react-navigation-is-focused-hoc';
 
 import { Authentication, Trainings, Settings, Training } from './components';
 import { initialRoute } from './common/constants';
@@ -69,7 +70,11 @@ const store = createStore(reducers, applyMiddleware(thunk, middleware()));
 
 const App = () => (
   <Provider store={store}>
-    <InitialRouter />
+    <InitialRouter
+      onNavigationStateChange={(prevState, currentState) => {
+        updateFocus(currentState)
+      }}
+    />
   </Provider>
 );
 

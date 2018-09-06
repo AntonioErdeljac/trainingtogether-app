@@ -16,6 +16,8 @@ const actionMap = {
   [actions.USER_UPDATE_REQUEST]: state => ({ ...state, isSubmitting: true, }),
   [actions.USER_UPDATE_SUCCESS]: (state, { result }) => ({ ...state, isSubmitting: false, data: result.data }),
   [actions.USER_UPDATE_FAILURE]: state => ({ ...state, isSubmitting: false }),
+
+  [actions.USER_DATA_RESET]: () => ({ ...initialState }),
 };
 
 export default (state = initialState, action) => {
