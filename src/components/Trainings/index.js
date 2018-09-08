@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, Dimensions, ActivityIndicator, ScrollView } from 'react-native';
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc';
-import { Icon } from 'native-base';
+import { Icon, Content } from 'native-base';
 import { connect } from 'react-redux';
 
 import selectors from './selectors';
@@ -33,7 +33,10 @@ class Trainings extends React.Component {
 
     if(!isLoading && hasLoaded) {
       content = (
-        <React.Fragment>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{ width: '100%', height: '90%' }}
+        >
           {trainings.map((training) => {
             return (
               <View key={training._id} style={{ width: '100%' , borderRadius: 5, elevation: 0.5, marginTop: 10, marginBottom: 10 }}>
@@ -48,7 +51,7 @@ class Trainings extends React.Component {
               </View>
             )
           })}
-        </React.Fragment>
+        </ScrollView>
       )
     }
 

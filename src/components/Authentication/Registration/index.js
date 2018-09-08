@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { omit, merge } from 'lodash';
 import { StatusBar, Image, Text, View, TouchableOpacity, AsyncStorage, ImageBackground, Dimensions } from 'react-native';
 import { Container, Content, Form as NativeForm, Icon } from 'native-base';
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
 
 import selectors from './selectors';
 import validations from './validations';
@@ -66,6 +67,24 @@ class Registration extends Form {
           <Text style={styles.registrationButtonText}>Facebook registration</Text>
           <Icon type="Entypo" name="facebook" style={styles.colorGreen} />
         </TouchableOpacity>
+        <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString())
+                  }
+                )
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")}
+        />
       </View>
     );
 
