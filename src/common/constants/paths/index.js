@@ -1,5 +1,6 @@
 import api from './api';
 import client from './client';
+import facebook from './facebook';
 
 export default {
   build: (path, ...params) => {
@@ -8,4 +9,5 @@ export default {
   },
   api,
   client,
+  facebook,
 };

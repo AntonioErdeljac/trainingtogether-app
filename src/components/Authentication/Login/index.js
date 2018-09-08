@@ -83,7 +83,7 @@ class Login extends Form {
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={() => navigation.navigate(paths.client.Registration)}>
-          <Text style={{ paddingTop: 10, paddingBottom: 10, fontSize: 15, color: '#fff', fontFamily: 'Nunito-Light', textAlign: 'center' }} >I don't have an account</Text>
+          <Text style={styles.secondaryText} >I don't have an account</Text>
         </TouchableOpacity>
       </View>
         </ImageBackground>

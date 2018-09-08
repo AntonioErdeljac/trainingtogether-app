@@ -28,6 +28,21 @@ export default {
     flex: 1,
     width: Dimensions.get('window').width-35,
   },
+  selectionContainer: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  secondaryText: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 15,
+    color: '#fff',
+    fontFamily: 'Nunito-Light',
+    textAlign: 'center',
+  },
   colorGreen: {
     color: '#1fcf7c',
   },

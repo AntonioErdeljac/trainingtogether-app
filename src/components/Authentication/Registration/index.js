@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { omit, merge } from 'lodash';
 import { StatusBar, Image, Text, View, TouchableOpacity, AsyncStorage, ImageBackground, Dimensions } from 'react-native';
 import { Container, Content, Form as NativeForm, Icon } from 'native-base';
-import { LoginButton, AccessToken } from 'react-native-fbsdk';
+import { LoginButton, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk';
 
 import selectors from './selectors';
 import validations from './validations';
@@ -32,13 +32,14 @@ class Registration extends Form {
     };
 
     this.formId = forms.REGISTRATION;
-    this.validations = validations;
   }
 
   handleRegistration = () => {
     this.handleSubmit()
       .then((canSubmit) => {
         const { values, register, navigation } = this.props;
+        const { selection } = this.state;
+
         if (canSubmit) {
           register(values)
             .then(() => navigation.navigate(paths.client.Login))
@@ -53,37 +54,55 @@ class Registration extends Form {
     })
   }
 
+  handleFacebookCallback = (error, result) => {
+    const { updateField } = this.props;
+
+    if (error) {
+      this.handleSelection();
+    } else {
+      updateField('personal.firstName', result.name.split(' ')[0], this.formId);
+      updateField('personal.lastName', result.name.split(' ')[1], this.formId);
+      updateField('contact.email', result.email, this.formId);
+      this.handleSelection('facebook');
+    }
+  }
+
+  handleFBLogin = (error, result) => {
+    const { updateField } = this.props;
+
+    if (error) {
+      this.handleSelection();
+    } else if (result.isCancelled) {
+      this.handleSelection();
+    } else {
+      AccessToken.getCurrentAccessToken().then(
+        (data) => {
+          updateField('authentication.facebookAccessToken', data.accessToken.toString(), this.formId);
+
+          const infoRequest = new GraphRequest(
+            paths.facebook.me,
+            null,
+            this.handleFacebookCallback
+          );
+          new GraphRequestManager().addRequest(infoRequest).start();
+        }
+      )
+    }
+  }
+
   render() {
-    const { isSubmitting, navigation } = this.props;
+    const { isSubmitting, navigation, updateField } = this.props;
     const { selection } = this.state;
 
     let selectionContent = (
-      <View style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
+      <View style={styles.selectionContainer}>
         <TouchableOpacity onPress={() => this.handleSelection('email')} style={styles.registrationButton}>
             <Text style={styles.registrationButtonText}>E-mail registration</Text>
             <Icon type="Entypo" name="mail" style={styles.colorGreen} />
           </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.handleSelection('facebook')} style={styles.registrationButton}>
-          <Text style={styles.registrationButtonText}>Facebook registration</Text>
-          <Icon type="Entypo" name="facebook" style={styles.colorGreen} />
-        </TouchableOpacity>
         <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    console.log(data.accessToken.toString())
-                  }
-                )
-              }
-            }
-          }
-          onLogoutFinished={() => console.log("logout.")}
+          readPermissions={["email", "user_friends", "public_profile"]}
+          onLoginFinished={this.handleFBLogin}
         />
       </View>
     );
@@ -92,6 +111,18 @@ class Registration extends Form {
       selectionContent = (
         <View style={styles.emailContainer}>
           <Input itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('contact.email')} label="Email" />
+          <Input type="password" itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('authentication.password')} label="Password" />
+          <TouchableOpacity onPress={this.handleRegistration} style={styles.registrationButton}>
+            <Text style={styles.registrationButtonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    if (selection === 'facebook') {
+      selectionContent = (
+        <View style={styles.emailContainer}>
+          <Input itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('contact.email')} label="Email" disabled />
           <Input type="password" itemStyle={styles.borderTransparent} style={styles.input} {...this.getFieldProps('authentication.password')} label="Password" />
           <TouchableOpacity onPress={this.handleRegistration} style={styles.registrationButton}>
             <Text style={styles.registrationButtonText}>Register</Text>
@@ -119,7 +150,7 @@ class Registration extends Form {
         </Text>
         {selectionContent}
         <TouchableOpacity onPress={() => navigation.navigate(paths.client.Login)}>
-          <Text style={{ paddingTop: 10, paddingBottom: 10, fontSize: 15, color: '#fff', fontFamily: 'Nunito-Light', textAlign: 'center' }} >I already have an account</Text>
+          <Text style={styles.secondaryText} >I already have an account</Text>
         </TouchableOpacity>
       </View>
         </ImageBackground>
